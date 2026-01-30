@@ -12,6 +12,7 @@ python Angel.py -d bugbounty.com -t 100 -o subdomains.json -f json
 
 # Subdomain Enum
 python Mage.py -d example.com -o subs.csv
+python Mage.py -d example.com -t 100 -f json -o subs.json
 
 # Mini WAF Engine
 python Moon.py --test --report test_results.json --format json
