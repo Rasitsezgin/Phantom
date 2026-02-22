@@ -2,8 +2,6 @@
 """
 Advanced Web Vulnerability Scanner
 Professional security assessment tool for bug bounty programs
-Author: Security Research Team
-License: MIT
 """
 
 import asyncio
