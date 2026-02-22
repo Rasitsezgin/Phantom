@@ -9,6 +9,7 @@ License: MIT
 import asyncio
 import aiohttp
 import argparse
+import html as html_lib
 import json
 import time
 from urllib.parse import urljoin, urlparse, parse_qs, urlencode
@@ -538,8 +539,7 @@ class AdvancedWebScanner:
         """Generate HTML format report"""
         severity_breakdown = self._get_severity_breakdown()
         
-        html = f"""
-<!DOCTYPE html>
+        report_html = f"""<!DOCTYPE html>
 <html>
 <head>
     <title>Vulnerability Scan Report - {html.escape(self.target)}</title>
@@ -607,9 +607,9 @@ class AdvancedWebScanner:
 """
         
         for vuln in self.vulnerabilities:
-            html += f"""
+            report_html += f"""
         <div class="vulnerability {vuln.severity}">
-            <div class="vuln-header {vuln.severity.lower()}">{html.escape(vuln.type)}</div>
+            <div class="vuln-header">{html.escape(vuln.type)}</div>
             <div class="vuln-detail"><span class="vuln-label">Severity:</span> {vuln.severity}</div>
             <div class="vuln-detail"><span class="vuln-label">Confidence:</span> {vuln.confidence}</div>
             <div class="vuln-detail"><span class="vuln-label">URL:</span> <code>{html.escape(vuln.url)}</code></div>
@@ -622,12 +622,12 @@ class AdvancedWebScanner:
         </div>
 """
         
-        html += """
+        report_html += """
     </div>
 </body>
 </html>
 """
-        return html
+        return report_html
         
     def _generate_text_report(self) -> str:
         """Generate plain text report"""
@@ -666,7 +666,7 @@ Remediation: {vuln.remediation}
 async def main():
     parser = argparse.ArgumentParser(
         description='Advanced Web Vulnerability Scanner',
-        epilog='Example: python scanner.py -u https://example.com -o report.json'
+        epilog='Example: python Hunter.py -u https://example.com -o report.html -f html'
     )
     parser.add_argument('-u', '--url', required=True, help='Target URL')
     parser.add_argument('-o', '--output', default='report.json', help='Output file')
